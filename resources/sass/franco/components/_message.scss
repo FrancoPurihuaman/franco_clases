@@ -1,0 +1,99 @@
+// Mensajes --------------------------------------------------------------------------------------------------
+// .f_message-container: Estilo del contenedor de alertas (Solo para alertas flotantes)
+// .f_message: Estilo de alerta
+// .f_message.f_message--full: Estilo de alerta con ancho al 100%
+// .f_message.success: Estilo de alerta exito
+// .f_message.info: Estilo de alerta informacion
+// .f_message.warning: Estilo de alerta advertencia
+// .f_message.danger: Estilo de alerta peligro
+// .f_message.error: Estilo de alerta error
+
+.f_message-container{
+    width: 95%;
+    max-width: 25rem;
+    position: absolute;
+    right: 5px;
+}
+
+.f_message{
+    width: 100%;
+    font-size: .9rem;
+    padding: 1rem 3rem 1rem 1rem;
+	color: #31708f;
+    background-color: #d9edf7;
+	border: 1px solid #bce8f1;
+	margin-top: 10px;
+    position: relative;
+    z-index: 1015;
+
+    &.f_message--full{
+        width: 100%;
+        z-index: auto;
+    }
+
+    .f_message__close{
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        border: unset;
+        background-color: unset;
+        padding: 0;
+        font-size: 1.2rem;
+        line-height: 1.2rem;
+        color: inherit;
+        
+        &:hover{
+            cursor: pointer;
+            color: #000;
+        }
+    }
+
+    ul {
+        text-align: left;
+        
+        li{
+            list-style: disc inside none;
+        }
+
+        li:first-child{
+            margin-top: .5rem;
+        }
+    }
+}
+
+.f_message.success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+  
+.f_message.info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+  
+.f_message.warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+  
+.f_message.danger, .f_message.error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+
+// Estilo de alerta para escritorio
+
+@media (min-width: map-get($breakpoints, md)) {
+    .f_message-container{
+        width: auto;
+    }
+
+    .f_message{
+        width: 25rem;
+    }
+}

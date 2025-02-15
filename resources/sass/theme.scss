@@ -1,0 +1,47 @@
+
+// Importación de estilos de la libreria franco 2.0.0
+@import 'franco/style.scss';
+
+
+// Input y select de ibreria Select slim (modificaciones)
+
+.f_input-box--flat.ss-main,
+form.f_input-box--flat .ss-main,
+table.f_input-box--flat .ss-main {
+	font-family: inherit;
+	font-size: $fontsizemain;
+    line-height: $lineheight;
+	width: 100%;
+    padding: 2px 0px;
+    padding-left: 5px;
+    border: none;
+    border-bottom: 1px solid $colorborderinput;
+    border-radius: 2px;
+    outline: none;
+    color: $colortextmain;
+	box-shadow: none;
+}
+
+
+.f_input-box--flat.ss-content,
+form.f_input-box--flat .ss-content,
+table.f_input-box--flat .ss-content {
+	
+	z-index: 900;
+	border: 1px solid $colorline;
+	
+	.ss-search input {
+		border: none;
+		border-bottom: 1px solid $colorborderinput;
+		border-radius: 0;
+		box-shadow: none;
+	}
+	
+	.ss-list .ss-option:hover {
+		background-color: rgba($colortema, .7) !important;
+	}
+	
+	.ss-option.ss-selected {
+		background-color: rgba($colortema, .9) !important;
+	}
+}

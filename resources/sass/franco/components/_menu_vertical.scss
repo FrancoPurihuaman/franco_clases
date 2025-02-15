@@ -1,0 +1,137 @@
+// .f_menu-v: Estilo de menu vertical. Este menu será visible solo desde ventanas de ancho "$md" en adelante (no mobolies) 
+// .f_menu-v__list: Estilo de lista de menu
+// .f_menu-v__item: Estilo de item de lista de menu
+// .f_menu-v__item .f_menu-v__list.show_submenu: Mostrar submenu de item de lista
+// .f_menu-v__item .expand_submenu: Estilo de flecha expandir item de lista de menu
+
+
+/* ================= Menu vertical - Estilo para pantallas moviles =============== */
+
+// Estilo del menu
+.f_menu-v {
+    display: none;
+}
+
+
+
+/* ================= Menu vertical - Estilo para pantallas de escritorio =============== */
+
+@media (min-width: map-get($breakpoints, lg)) { 
+
+	// Estilo del menu
+	.f_menu-v {
+		display: block;
+	    flex: 1 1 100%;
+	    width: 100%;
+	    height: auto;
+	    overflow-y: auto;
+	    font-size: inherit;
+		//-webkit-box-shadow: 0px 0px 6px 1px rgba(50, 50, 50, 0.4), 0px 0px 0px rgba(60,60,60,0.1);
+	    //-moz-box-shadow: 0px 0px 6px 1px rgba(50, 50, 50, 0.4), 0px 0px 0px rgba(60,60,60,0.1);
+		//box-shadow: 0px 0px 6px 1px rgba(50, 50, 50, 0.4), 0px 0px 0px rgba(60,60,60,0.1);
+		
+		
+		&--left > .f_menu-v__list {
+			margin-right: 1rem;
+			border-right: 1px solid $colorline;
+		}
+		
+		&--right > .f_menu-v__list {
+			margin-left: 1rem;
+			border-left: 1px solid $colorline;
+		}
+	}
+	
+	
+	// Estilo de lista de menu
+	.f_menu-v__list {
+	    display: block;
+		font-weight: normal;
+	}
+	
+	
+	// Estilo de item de lista de menu
+	.f_menu-v__item {
+	    display: block;
+	    line-height: 2.5rem;
+	    min-height: auto;
+	    color: $colortextmain;
+	    cursor: pointer;
+	
+		&.active {
+			font-weight: bold;
+		}
+	    
+	    & a {
+	        display: inline-block;
+			width: 100%;
+	        color: inherit;
+	    }
+	
+		// Estilo de la flecha expandir submenu
+	    .expand_submenu {
+	        display: inline-block;
+	        width: 8px;
+	        height: 8px;
+	        border-right: 2px solid; 
+	        border-bottom: 2px solid;
+			color: $colortextmain;
+			margin-right: .5rem;
+	        transform: rotate(-45deg);
+	        -moz-transform: rotate(-45deg);
+	        -webkit-transform: rotate(-45deg);
+			transition: transform .3s ease-in-out;
+			-moz-transition: transform .3s ease-in-out;
+			-webkit-transition: transform .3s ease-in-out;
+	    }
+	
+	    &.active > .expand_submenu {
+	        transform: rotate(45deg);
+	        -moz-transform: rotate(45deg);
+	        -webkit-transform: rotate(45deg);
+	    }
+	
+	    .f_menu-v__item.parent_submenu {
+	        margin: .3rem 0;
+	
+	        &:hover {
+				font-weight: bold;
+				color: $colortextmain !important;
+	        }
+	    }
+
+		.icon {
+			margin-right: .5rem;
+		}
+	}
+	
+	.f_menu-v > .f_menu-v__list > .f_menu-v__item {
+	    padding: 0 15px;
+	
+	    &:hover {
+	        color: darken($colorbackhmenu, 2%);
+	    }
+	}
+	
+	
+	// Estilos de submenu
+	.f_menu-v .f_menu-v__list .f_menu-v__list {
+		width: 100%;
+	    max-height: 0;
+		overflow: hidden;
+		padding-left: 1.25rem;
+		transition: max-height .3s ease-in-out;
+		-moz-transition: max-height .3s ease-in-out;
+		-webkit-transition: max-height .3s ease-in-out;
+	
+	    &.show_submenu {
+	        max-height: 1000px;
+	    }
+	
+		.f_menu-v__item {
+	        line-height: 1.8rem;
+
+			&:hover {color: darken($colorbackhmenu, 2%);}
+	    }
+	}
+}
