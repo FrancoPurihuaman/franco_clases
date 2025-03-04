@@ -1,4 +1,4 @@
-import { f_validation } from '../franco/libraries/f_validator';
+import FValidator from '../franco/libraries/FValidator';
 
 
 	
@@ -14,18 +14,6 @@ nl_chbs_clases.forEach(function(chb_clase){
 		}
 	});
 });
-
-
-function identificadoresDeCampos(idClase){
-	
-	return  {
-		grupo: 'grupo_' + idClase,
-		area: 'area_' + idClase,
-		profesor: 'profesor_' + idClase,
-		horaInicio: 'horaInicio_' + idClase,
-		horaCierre: 'horaCierre_' + idClase
-	}
-}
 
 function desbloquearCampos(idClase){
 	
@@ -53,7 +41,7 @@ function bloquearCampos(idClase){
 	
 	// Limpiar campos
 	profesor.selectedIndex = -1;
-	prettySelect.clean(profesor.form.id, profesor.dataset.id);
+	prettySelect.clean(profesor.dataset.id);
 	horaInicio.value = '';
 	horaCierre.value = '';
 	
@@ -64,95 +52,60 @@ function bloquearCampos(idClase){
 	
 }
 
-function validarCampos(){
+function guardarClases(){
 	
-	let oValidation = {
-		invalidData : [],
-		validData : [],
-		errors : () => {
-			if(this.invalidData.length === 0){
-				return [];
-			}else {
-				return this.invalidData.map((element) => {
-					return element.message;
-				});
+	let oFValidator = new FValidator({isChainable: true, formData: formData});
+	
+	for (let i = 0; i < nl_chbs_clases.length; i++) {
+	  if(nl_chbs_clases[i].checked){
+			let clase = getClase(nl_chbs_clases[i].id);
+			oFValidator = validarCampos(oFValidator, clase);
+			
+			if(oFValidator.getErrorMessages().length > 0){
+				console.log(oFValidator.getErrorMessages());
+				break;
 			}
 		}
 	}
 	
-	nl_chbs_clases.forEach(function(chb_clase){
-		
-		if(chb_clase.checked){
-			let idsCampos = identificadoresDeCampos(idClase);
-			
-			let grupo = document.getElementById(idsCampos.grupo);
-			let area = document.getElementById(idsCampos.area);
-			let profesor = document.getElementById(idsCampos.profesor);
-			let horaInicio = document.getElementById(idsCampos.horaInicio);
-			let horaCierre = document.getElementById(idsCampos.horaCierre);
-			
-			oFValidacion = new f_validation({isChainable: true});
-			oFValidacion.isEmpty(grupo.value, 'grupo')
-						.isEmpty(area.value, 'área')
-						.isEmpty(profesor.value, 'profesor')
-						.isTime(horaInicio.value, 'hora de inicio')
-						.isTime(horaCierre.value, 'hora de cierre')
-						.isTimeEarlierThan(horaInicio, horaCierre, 'hora de inicio', 'hora de cierre');
-			
-			// Validar grupo
-			if(grupo.value == ""){
-				
-				console.log("Algo salio mal! No se encontró el identificador del grupo");
-			}
-			
-			// Validar area
-			if(area.value == ""){
-				console.log("Algo salio mal! No se encontró el identificador del área");
-			}
-			
-			// Validar profesor
-			if(profesor.value == ""){
-				console.log("Seleccione el profesor");
-			}
-			
-			// Validar que si un campo (hora inicio u hora cierre) esta lleno el otro también
-			
-			// Validar hora inicio
-			if(horaInicio.value !== ""){
-				var timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
-				
-				return timePattern.test(horaInicio.value);
-			}
-			
-			// Validar hora cierre
-			if(horaCierre.value !== ""){
-				var timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
-				
-				return timePattern.test(time);
-			}
-			
-			// Validar que la hora de inicio sea menor a la hora de cierre
-			
-			
-		}
-    });
-
-	return oValidation;
-}
-
-function formatearDatos(form){
-	
-	data = {
-		grupo: '',
-		area: '',
-		profesor: '',
-		horaInicio: '',
-		horaCierre: ''
-	}
-	
-	return data;
+	console.log("Todo OK");
 }
 
 function enviarDatos(){}
 
-function mostrarRespuesta(){}
+function mostrarMensaje(){}
+
+function validarCampos(oFValidator, clase){
+			
+	oFValidator.isNotEmpty('grupo').isNotEmpty('area').isNotEmpty('profesor').isValuePresentIf('hora_de_inicio', 'hora_de_cierre ')
+	if(clase.hora_de_inicio){oFValidator.isTime('hora_de_inicio')}
+	if(clase.hora_de_cierre){oFValidator.isTime('hora_de_cierre')}
+	if(clase.hora_de_inicio && clase.hora_de_cierre){oFValidator.isTimeEarlierThan('hora_de_inicio', 'hora_de_cierre')}
+
+	return oFValidator;
+}
+
+function getClase(idArea){
+	
+	let idsCampos = identificadoresDeCampos(idArea);
+	let clase = {
+		grupo: document.getElementById(idsCampos.grupo),
+		area: document.getElementById(idsCampos.area),
+		profesor: document.getElementById(idsCampos.profesor),
+		hora_de_inicio: document.getElementById(idsCampos.horaInicio),
+		hora_de_cierre: document.getElementById(idsCampos.horaCierre)
+	}
+	
+	return clase;
+}
+
+function identificadoresDeCampos(idArea){
+	
+	return  {
+		grupo: 'grupo_' + idArea,
+		area: 'area_' + idArea,
+		profesor: 'profesor_' + idArea,
+		horaInicio: 'horaInicio_' + idArea,
+		horaCierre: 'horaCierre_' + idArea
+	}
+}

@@ -54,7 +54,7 @@
             		method="post" class="f_input-box--flat" id="formClasesGuardar" enctype="multipart/form-data">
             	@csrf
             	
-            	<div class="md:flex mb-6">
+            	<div class="md:flex mb-6 hidden">
                     <div class="f_width_200 font-bold underline">Área</div>
                     <div class="f_width_200 font-bold underline">Profesor</div>
                     <div class="f_width_200 font-bold underline">Hora inicio</div>
@@ -63,16 +63,19 @@
                     
 				@foreach($areasNoAsignadas as $area)
                     <div class="md:flex pb-6 mb-6 border-b border-gray-300">
-                        <div class="f_width_200 flex">
-                        	<div class="w-5 min-w-5">
-                        		<input type="checkbox" id="clase_{{ $area->ARE_CODIGO }}" class="cursor-pointer"
-                                    data-grupo="{{ $grupo->GRP_CODIGO }}" data-clase="{{ $area->ARE_CODIGO }}" value="">
-                        	</div>
-                        	<div><label for="chb_{{ $area->ARE_CODIGO }}" class="cursor-pointer font-bold">{{ $area->ARE_NOMBRE }}</label></div>
+                        <div style="display:none">
+                    		<input type="hidden" id="grupo_{{ $area->ARE_CODIGO }}" value="{{ $grupo->GRP_CODIGO }}">
+                    		<input type="hidden" id="area_{{ $area->ARE_CODIGO }}" value="{{ $area->ARE_CODIGO }}">
                         </div>
-                        <div class="f_width_200">
-                            <select id="profesor_{{ $area->ARE_CODIGO }}" class="pretty_default f_input-box--flat"
-                            	data-clase="{{ $area->ARE_CODIGO }}">
+                        
+                        <div class="flex">
+                        	<div class="w-5 min-w-5">
+                        		<input type="checkbox" id="{{ $area->ARE_CODIGO }}" class="cursor-pointer" value="">
+                        	</div>
+                        	<label for="{{ $area->ARE_CODIGO }}" class="cursor-pointer font-bold">{{ $area->ARE_NOMBRE }}</label>
+                        </div>
+                        <div class="">
+                            <select id="profesor_{{ $area->ARE_CODIGO }}" class="pretty_default f_input-box--flat">
                                 <option value="">&nbsp</option>
                                 @foreach($profesores as $profesor)
                                     <option value="{{ $profesor->PFS_CODIGO }}">
@@ -81,11 +84,11 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="f_width_200">
-                        	<input type="time" id="horaInicio_{{ $area->ARE_CODIGO }}" data-clase="{{ $area->ARE_CODIGO }}" value="">
+                        <div class="w-fit">
+                        	<input type="time" id="horaInicio_{{ $area->ARE_CODIGO }}" value="">
                         </div>
-                        <div class="f_width_200">
-                        	<input type="time" id="horaCierre_{{ $area->ARE_CODIGO }}" data-clase="{{ $area->ARE_CODIGO }}" value="">
+                        <div class="w-fit">
+                        	<input type="time" id="horaCierre_{{ $area->ARE_CODIGO }}" value="">
                         </div>
                     </div>
                 @endforeach

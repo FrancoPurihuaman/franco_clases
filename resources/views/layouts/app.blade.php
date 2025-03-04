@@ -129,7 +129,7 @@
         {{-- Crear inputs con slim select --}}
         
         var oContainerPrettySelect = {
-        	oListSlimSelect : {},
+        	arraySlimSelect : [],
         	create : function(idContainerSelect){
         		
         		if(idContainerSelect == ''){
@@ -139,13 +139,11 @@
         		
         		var nodeContainerSelect = document.querySelector('#'+idContainerSelect);
         		if(nodeContainerSelect){
-        			this.oListSlimSelect[idContainerSelect] = [];
-        			[].map.call(nodeContainerSelect.querySelectorAll('.pretty_default'), nodeSelect => {
-            	    	
-            	    	this.oListSlimSelect[idContainerSelect].push(new SlimSelect({
-                        	select: nodeSelect
-                        }));
-            	    });
+            	    nodeContainerSelect.querySelectorAll('.pretty_default').forEach(nodeSelect => {
+            	    	var oSlimSelect = new SlimSelect({ select: nodeSelect });
+            	    	oSlimSelect.settings.f_myContainer =  idContainerSelect;
+            	    	this.arraySlimSelect.push(oSlimSelect);
+        	    	});
         		}else{
         			console.error("Error.create: No se encontró el contenedor con id "+ idContainerSelect);
         		}
@@ -153,30 +151,27 @@
         	cleanAll : function(idContainerSelect){
         	
         		if(idContainerSelect == ''){
-            		console.error("Error.clearAll: Debe ingresar el identificador para el contenedor de select");
+            		console.error("Error.clearAll: Debe ingresar el identificador del contenedor de los select");
             		return;
         	    }
         		
-        		if(this.oListSlimSelect[idContainerSelect]){
-            	    this.oListSlimSelect[idContainerSelect].forEach(oPrettySelect => {
-            	    	oPrettySelect.setSelected([]);
-            	    });
-        	    }else{
-        	    	console.error("Error.clearAll: No se encontró el contenedor con id "+ idContainerSelect);
-        	    }
+        	    this.arraySlimSelect.forEach(oSlimSelect => {
+        	    	if(oSlimSelect.settings.f_myContainer == idContainerSelect){ oSlimSelect.setSelected([]);}
+        	    });
         	},
-        	clean : function(idContainerSelect, idSelect){
+        	clean : function(idOjbSelect){
         	
-        		if(idContainerSelect == '' || idSelect == ''){
-            		console.error("Error.clear: Debe ingresar los identificadores para el select y su contenedor");
+        		if(idSelect == ''){
+            		console.error("Error.clear: Debe ingresar el identificadore del select");
             		return;
         	    }
+        	    
+    	    	var oSlimSelect_sought = this.arraySlimSelect.find((oSlimSelect) => oSlimSelect.settings.id === idOjbSelect);
         		
-        		if(this.oListSlimSelect[idContainerSelect]){
-            		var oPrettySelect = this.oListSlimSelect[idContainerSelect].find((oPrettySelect) => oPrettySelect.settings.id === idSelect);
-            		oPrettySelect.setSelected([]);
+        	    if(oSlimSelect_sought){
+        	    	oSlimSelect_sought.setSelected([]);
         	    }else{
-        	    	console.error("Error.clear: No se encontró el contenedor con id "+ idContainerSelect);
+        	    	console.error("Error.clear: No se encontró el objeto select con id: "+ idOjbSelect);
         	    }
         	}
         };
